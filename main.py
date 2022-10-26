@@ -10,7 +10,7 @@ from train import train_dataset
 
 drivePath = os.getcwd()
 
-BATCH_SIZE = 64
+BATCH_SIZE = 32
 
 workers = 4
 class_size = 10

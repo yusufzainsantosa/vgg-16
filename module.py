@@ -3,6 +3,8 @@ import os
 import shutil
 import matplotlib.pyplot as plt
 
+from torchvision.utils import make_grid
+
 BATCH_SIZE_DATASET = 5
 
 def copy_images(imagePaths, folder):
@@ -48,3 +50,28 @@ def visualize_batch(batch, classes, dataset_type):
 	# show the plot
 	plt.tight_layout()
 	plt.show()
+
+def display_sample(trainDataset, valDataset, train_loader, val_loader):
+	# grab a batch from both training and validation dataloader
+	trainIter = iter(train_loader)
+	valIter = iter(val_loader)
+	trainBatch = next(trainIter)
+	valBatch = next(valIter)
+	# visualize the training and validation set batches
+	print("[INFO] visualizing training and validation batch...")
+	visualize_batch(trainBatch, trainDataset.classes, "train")
+	visualize_batch(valBatch, valDataset.classes, "val")
+
+	for images, _ in train_loader:
+			print('images.shape:', images.shape)
+			plt.figure(figsize=(16,8))
+			plt.axis('off')
+			plt.imshow(make_grid(images, nrow=16).permute((1, 2, 0)))
+			break
+
+	sample_image=iter(train_loader)
+	samples,labels=sample_image.next()
+	print(samples.shape) #64 batch size, 1 channel, width 224 , height 224
+	print(labels)
+
+	print(len(train_loader))

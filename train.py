@@ -9,8 +9,7 @@ def train_dataset(train_loader, val_loader, drivePath):
 
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
   model = VGG16_NET() 
-  model = model.to(device=device) 
-  load_model = True
+  model = model.to(device=device)
   criterion = nn.CrossEntropyLoss()
   optimizer = torch.optim.Adam(model.parameters(), lr= lr) 
 
@@ -27,7 +26,7 @@ def train_dataset(train_loader, val_loader, drivePath):
           loss.backward()
           optimizer.step()
           loss_var += loss.item()
-          if idx%64==0:
+          if idx%32==0:
               print(f'Epoch [{epoch+1}/{num_epochs}] || Step [{idx+1}/{len(train_loader)}] || Loss:{loss_var/len(train_loader)}')
       print(f"Loss at epoch {epoch+1} || {loss_var/len(train_loader)}")
 
@@ -44,7 +43,7 @@ def train_dataset(train_loader, val_loader, drivePath):
           print(f"accuracy {float(correct) / float(samples) * 100:.2f} percentage || Correct {correct} out of {samples} samples")
   
   model_path = os.path.join(drivePath, "model")
-  cifar_path = os.path.join(model_path, "cifar10_vgg16_model.pt")
+  cifar_path = os.path.join(model_path, "cifar10_vgg16_custom_model.pth")
   torch.save(model.state_dict(), cifar_path) #SAVES THE TRAINED MODEL
   model = VGG16_NET()
   model.load_state_dict(torch.load(cifar_path)) #loads the trained model

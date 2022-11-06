@@ -5,7 +5,7 @@ from vgg16 import VGG16_NET
 
 def train_dataset(train_loader, val_loader, drivePath):
   lr=1e-4
-  num_epochs=5
+  num_epochs=50
 
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
   model = VGG16_NET() 

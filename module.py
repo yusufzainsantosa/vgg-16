@@ -1,5 +1,7 @@
 #import libraries
 import os
+import torch
+import torch.nn as nn
 import shutil
 import matplotlib.pyplot as plt
 
@@ -26,6 +28,10 @@ def copy_images(imagePaths, folder):
 		destination = os.path.join(labelFolder, imageName)
 		shutil.copy(path, destination)
 
+def reset_weights(m):
+	if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+		m.reset_parameters()
+
 def visualize_batch(batch, classes, dataset_type):
 	# initialize a figure
 	fig = plt.figure("{} batch".format(dataset_type),
@@ -51,16 +57,12 @@ def visualize_batch(batch, classes, dataset_type):
 	plt.tight_layout()
 	plt.show()
 
-def display_sample(trainDataset, valDataset, train_loader, val_loader):
+def display_sample(allDataset, train_loader):
 	# grab a batch from both training and validation dataloader
 	trainIter = iter(train_loader)
-	valIter = iter(val_loader)
 	trainBatch = next(trainIter)
-	valBatch = next(valIter)
-	# visualize the training and validation set batches
-	print("[INFO] visualizing training and validation batch...")
-	visualize_batch(trainBatch, trainDataset.classes, "train")
-	visualize_batch(valBatch, valDataset.classes, "val")
+	print("[INFO] visualizing dataset batch...")
+	visualize_batch(trainBatch, allDataset.classes, "train")
 
 	for images, _ in train_loader:
 			print('images.shape:', images.shape)

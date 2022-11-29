@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from torchvision.utils import make_grid
 
-BATCH_SIZE_DATASET = 5
+BATCH_SIZE_DATASET = 25
 
 def copy_images(imagePaths, folder):
 	# check if the destination folder exists and if not create it
@@ -57,12 +57,16 @@ def visualize_batch(batch, classes, dataset_type):
 	plt.tight_layout()
 	plt.show()
 
-def display_sample(allDataset, train_loader):
+def display_sample(trainDataset, valDataset, train_loader, val_loader):
 	# grab a batch from both training and validation dataloader
 	trainIter = iter(train_loader)
+	valIter = iter(val_loader)
 	trainBatch = next(trainIter)
-	print("[INFO] visualizing dataset batch...")
-	visualize_batch(trainBatch, allDataset.classes, "train")
+	valBatch = next(valIter)
+	# visualize the training and validation set batches
+	print("[INFO] visualizing training and validation batch...")
+	visualize_batch(trainBatch, trainDataset.classes, "train")
+	visualize_batch(valBatch, valDataset.classes, "val")
 
 	for images, _ in train_loader:
 			print('images.shape:', images.shape)
